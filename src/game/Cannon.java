@@ -6,6 +6,8 @@ import java.awt.event.KeyEvent;
 public class Cannon
 {
     private boolean turn        = true;
+    private int     shift       = 0;
+    private int     distance    = 50;
     private int     l_x1;
     private int     l_x2;
     private int     l_y1;
@@ -21,39 +23,55 @@ public class Cannon
         this.game = game;
         this.posx = posx;
         this.turn = turn;
+    }
+
+    private void calcLine()
+    {
+        // fest
         this.l_x1 = this.posx + this.diameter / 2;
-        this.l_y1 = game.getHeight() - 50 ;
-        this.l_x2 = this.posx + this.diameter/2;
-        this.l_y2 = game.getHeight() - this.diameter / 2 - 50;
+        this.l_y1 = game.getHeight() - this.distance;
+
+        // variabel
+        this.l_x2 = this.l_x1 + this.shift;
+        //pythagoras zur berechnung des punktes auf dem kreis
+        double a = Math.pow(this.diameter / 2, 2);
+        double b = Math.pow(this.shift, 2);
+        this.l_y2 = (int) (this.l_y1 - Math.sqrt(a - b));
     }
 
     public void paint(Graphics2D g)
     {
-        g.drawOval(posx, game.getHeight() - this.diameter / 2 - 50,
+        calcLine();
+
+        g.drawOval(posx, game.getHeight() - this.diameter / 2 - this.distance,
                 this.diameter, this.diameter);
         g.fillRect(posx + this.diameter / 2 - this.chargeWidth / 2,
-                game.getHeight() - this.diameter / 2 - 70 - this.charge,
-                this.chargeWidth, this.charge);
+                game.getHeight() - this.diameter / 2 - this.distance
+                        - this.diameter - this.charge, this.chargeWidth,
+                this.charge);
         g.drawLine(this.l_x1, this.l_y1, this.l_x2, this.l_y2);
-        System.out.println(this.l_x1 +" "+ this.l_y1 +" "+ this.l_x2 +" "+ this.l_y2);
     }
 
     public void keyPressed(int e)
     {
         // space
-        if (e == 32 && this.charge < 100)
+        if (e == KeyEvent.VK_SPACE && this.charge < 100)
         {
             this.charge++;
         }
         // left
         if (e == KeyEvent.VK_LEFT || e == KeyEvent.VK_D)
         {
-
+            if (this.shift > -1 * (this.diameter / 2))
+                this.shift--;
         }
         // right
         if (e == KeyEvent.VK_RIGHT || e == KeyEvent.VK_D)
         {
-
+            if (this.shift < this.diameter / 2)
+            {
+                this.shift++;
+            }
         }
     }
 

@@ -33,10 +33,12 @@ public class Game extends JPanel
             @Override
             public void keyReleased(KeyEvent e)
             {
-                cannon1.setTurn(!cannon1.getTurn());
-                cannon2.stopcharge();
-                cannon1.stopcharge();
-
+                if (e.getKeyCode() == KeyEvent.VK_SPACE)
+                {
+                    cannon1.setTurn(!cannon1.getTurn());
+                    cannon2.stopcharge();
+                    cannon1.stopcharge();
+                }
             }
 
             @Override
