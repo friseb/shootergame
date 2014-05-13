@@ -14,12 +14,13 @@ public class Game extends JPanel
 {
 
     private int gameWidth  = 600;
-    private int gameHeight = 400;
+    private int gameHeight = 600;
     private int distance   = 50;
+    Shot        shot       = new Shot();
     Surface     surface    = new Surface(this);
-    Cannon      cannon1    = new Cannon(this, this.distance, true);
-    Cannon      cannon2    = new Cannon(this, this.gameWidth - this.distance,
-                                   false);
+    Cannon      cannon1    = new Cannon(this, this.shot, this.distance, true);
+    Cannon      cannon2    = new Cannon(this, this.shot, this.gameWidth
+                                   - this.distance, false);
 
     public Game()
     {
@@ -35,15 +36,28 @@ public class Game extends JPanel
             {
                 if (e.getKeyCode() == KeyEvent.VK_SPACE)
                 {
+                    if (cannon1.getTurn())
+                    {
+                        cannon1.shoot();
+                    }
+                    else
+                    {
+                        cannon2.shoot();
+                    }
+                    
                     cannon1.setTurn(!cannon1.getTurn());
-                    cannon2.stopcharge();
                     cannon1.stopcharge();
+                    cannon2.stopcharge();
                 }
             }
 
             @Override
             public void keyPressed(KeyEvent e)
             {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    System.exit(0);
+                }
+                
                 if (cannon1.getTurn())
                 {
                     cannon1.keyPressed(e.getKeyCode());
@@ -68,6 +82,8 @@ public class Game extends JPanel
         surface.paint(g2d);
         cannon1.paint(g2d);
         cannon2.paint(g2d);
+        shot.paint(g2d);
+
     }
 
     public static void main(String[] args) throws InterruptedException
@@ -84,8 +100,9 @@ public class Game extends JPanel
 
         while (true)
         {
+            game.shot.fly();
             game.repaint();
-            Thread.sleep(10);
+            Thread.sleep(20);
         }
     }
 }

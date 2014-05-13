@@ -17,12 +17,19 @@ public class Cannon
     private int     posx;
     private int     chargeWidth = 10;
     private Game    game;
+    private Shot    shot;
 
-    public Cannon(Game game, int posx, boolean turn)
+    public Cannon(Game game, Shot shot, int posx, boolean turn)
     {
         this.game = game;
         this.posx = posx;
         this.turn = turn;
+        this.shot = shot;
+    }
+
+    public void shoot()
+    {
+        shot.shoot(this.l_x2, this.l_y2, this.shift, this.charge);
     }
 
     private void calcLine()
@@ -33,7 +40,7 @@ public class Cannon
 
         // variabel
         this.l_x2 = this.l_x1 + this.shift;
-        //pythagoras zur berechnung des punktes auf dem kreis
+        // pythagoras zur berechnung des punktes auf dem kreis
         double a = Math.pow(this.diameter / 2, 2);
         double b = Math.pow(this.shift, 2);
         this.l_y2 = (int) (this.l_y1 - Math.sqrt(a - b));
