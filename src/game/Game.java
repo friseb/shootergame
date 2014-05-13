@@ -1,5 +1,6 @@
 package game;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -13,14 +14,16 @@ import javax.swing.JPanel;
 public class Game extends JPanel
 {
 
-    private int gameWidth  = 600;
-    private int gameHeight = 600;
-    private int distance   = 50;
-    Shot        shot       = new Shot();
-    Surface     surface    = new Surface(this);
-    Cannon      cannon1    = new Cannon(this, this.shot, this.distance, true);
-    Cannon      cannon2    = new Cannon(this, this.shot, this.gameWidth
-                                   - this.distance, false);
+    public static final int gameWidth  = 600;
+    public static final int gameHeight = 600;
+    private int             distance   = 50;
+    Shot                    shot       = new Shot(this);
+    Surface                 surface    = new Surface(this);
+    Cannon                  cannon1    = new Cannon(this, this.shot,
+                                               this.distance, true);
+    Cannon                  cannon2    = new Cannon(this, this.shot,
+                                               Game.gameWidth - this.distance,
+                                               false);
 
     public Game()
     {
@@ -44,7 +47,7 @@ public class Game extends JPanel
                     {
                         cannon2.shoot();
                     }
-                    
+
                     cannon1.setTurn(!cannon1.getTurn());
                     cannon1.stopcharge();
                     cannon2.stopcharge();
@@ -54,10 +57,11 @@ public class Game extends JPanel
             @Override
             public void keyPressed(KeyEvent e)
             {
-                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+                {
                     System.exit(0);
                 }
-                
+
                 if (cannon1.getTurn())
                 {
                     cannon1.keyPressed(e.getKeyCode());
@@ -79,9 +83,11 @@ public class Game extends JPanel
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setColor(Color.BLACK);
         surface.paint(g2d);
         cannon1.paint(g2d);
         cannon2.paint(g2d);
+        g2d.setColor(Color.RED);
         shot.paint(g2d);
 
     }
@@ -93,7 +99,7 @@ public class Game extends JPanel
         Game game = new Game();
 
         frame.add(game);
-        frame.setSize(game.gameWidth, game.gameHeight);
+        frame.setSize(Game.gameWidth, Game.gameHeight);
         frame.setVisible(true);
         frame.setResizable(false);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

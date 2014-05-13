@@ -4,11 +4,17 @@ import java.awt.Graphics2D;
 
 public class Shot
 {
+    private Game game;
     private int currentx = 2000;
     private int currenty = 2000;
     private int shift;
     private int charge;
     private int diameter = 4;
+
+    public Shot(Game game)
+    {
+        this.game = game;
+    }
 
     public void shoot(int startx, int starty, int shift, int charge)
     {
@@ -24,7 +30,15 @@ public class Shot
     public void fly()
     {
         this.currentx += (int) this.shift;
-        this.currenty += this.charge / -10;
+        if (this.currenty + this.charge / -10 < this.game.getHeight()
+                - Surface.height)
+        {
+            this.currenty += this.charge / -10;
+        }
+        else
+        {
+            this.currenty = 2000;
+        }
         this.charge -= 2;
     }
 
